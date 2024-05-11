@@ -5,9 +5,12 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV
 
 # Load the dataset from the Excel file
 data =pd.read_excel("processed_data.xlsx")
+
 
 # Print the names of the features
 print("Features: ", data.columns)
