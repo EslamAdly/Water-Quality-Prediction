@@ -66,7 +66,7 @@ class ModelGUI(tk.Tk):
             ros = RandomOverSampler(random_state=109)
             X_resampled, y_resampled = ros.fit_resample(X, Y)
             self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
-                X_resampled, y_resampled, test_size=0.2
+                X_resampled, y_resampled, test_size=0.2, random_state=109
             )
         else:
             messagebox.showerror("Error", "No data loaded!")
@@ -96,9 +96,9 @@ class ModelGUI(tk.Tk):
 
     def apply_decision_tree(self):
         # Best parameters found by GridSearchCV
-        best_params = {'ccp_alpha': 0.0, 'criterion': 'entropy', 'max_depth': None, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2}
+        best_params = {'min_samples_leaf': 1, 'min_samples_split': 2}
         # Create the DecisionTreeClassifier with the best parameters
-        model = DecisionTreeClassifier(**best_params, random_state=42)
+        model = DecisionTreeClassifier(**best_params, random_state=109)
         # Train the model
         model.fit(self.X_train, self.y_train)
         return model
@@ -110,7 +110,7 @@ class ModelGUI(tk.Tk):
 
     def apply_svm(self):
         # Best hyperparameters
-        best_params = {'C': 1, 'gamma': 0.1}
+        best_params = {'C': 1, 'gamma': 10}
         
         # Create SVC model with the best hyperparameters
         model = SVC(kernel='rbf', C=best_params['C'], gamma=best_params['gamma'])
