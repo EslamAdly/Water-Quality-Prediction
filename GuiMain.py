@@ -96,7 +96,7 @@ class ModelGUI(tk.Tk):
 
     def apply_decision_tree(self):
         # Best parameters found by GridSearchCV
-        best_params = {'ccp_alpha': 0.0, 'criterion': 'entropy', 'max_depth': None, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2}
+        best_params = {'min_samples_leaf': 1, 'min_samples_split': 2}
         # Create the DecisionTreeClassifier with the best parameters
         model = DecisionTreeClassifier(**best_params, random_state=109)
         # Train the model

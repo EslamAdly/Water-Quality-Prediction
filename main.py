@@ -10,6 +10,7 @@ from imblearn.over_sampling import RandomOverSampler
 
 
 df = pd.read_excel("processed_data.xlsx")
+
 #print(df_rand.head())
 
 x=df.drop("Potability", axis=1)
@@ -25,12 +26,29 @@ x_train, x_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test
 
 
 
-def decisiontree_best_params():
-    # Best parameters found by GridSearchCV
-    best_params = {'min_samples_leaf': 1, 'min_samples_split': 2}
+from sklearn.model_selection import GridSearchCV
 
-    # Create the DecisionTreeClassifier with the best parameters
-    best_dt_model = DecisionTreeClassifier(**best_params, random_state=42)
+def descision_tree_model():
+    # Define the parameter grid to search
+    param_grid = {
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4]
+    }
+
+    # Instantiate the DecisionTreeClassifier
+    dt_classifier = DecisionTreeClassifier(random_state=42)
+
+    # Instantiate GridSearchCV
+    grid_search = GridSearchCV(dt_classifier, param_grid, cv=5, scoring='accuracy')
+
+    # Fit the grid search to the data
+    grid_search.fit(x_train, y_train)
+
+    # Print the best parameters found
+    print("Best Parameters:", grid_search.best_params_)
+
+    # Get the best estimator
+    best_dt_model = grid_search.best_estimator_
 
     # Train the model
     best_dt_model.fit(x_train, y_train)
@@ -47,4 +65,4 @@ def decisiontree_best_params():
     print("Confusion Matrix:")
     print(confusion_mat)
 
-decisiontree_best_params()
+descision_tree_model()
