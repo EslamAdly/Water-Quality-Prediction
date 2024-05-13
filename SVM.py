@@ -7,6 +7,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
+from imblearn.over_sampling import RandomOverSampler
+
 
 # Load the dataset from the Excel file
 data =pd.read_excel("processed_data.xlsx")
@@ -22,8 +24,10 @@ print(data.head())
 X = data.drop(columns=['Potability'])  # Assuming 'potability' is the target column
 y = data['Potability']
 
-# Split the dataset into training set and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=109)
+ros = RandomOverSampler(random_state=42)
+X_resampled, y_resampled = ros.fit_resample(X, y)
+
+X_train, X_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=109)
 
 # Apply feature scaling to the training and test data
 scaler = StandardScaler()

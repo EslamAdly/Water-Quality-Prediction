@@ -21,13 +21,13 @@ x=scaler.fit_transform(x)
 ros = RandomOverSampler(random_state=42)
 X_resampled, y_resampled = ros.fit_resample(x, y)
 
-x_train, x_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test_size=0.2)
+x_train, x_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
 
 
 
 def decisiontree_best_params():
     # Best parameters found by GridSearchCV
-    best_params = {'ccp_alpha': 0.0, 'criterion': 'entropy', 'max_depth': None, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2}
+    best_params = {'min_samples_leaf': 1, 'min_samples_split': 2}
 
     # Create the DecisionTreeClassifier with the best parameters
     best_dt_model = DecisionTreeClassifier(**best_params, random_state=42)
