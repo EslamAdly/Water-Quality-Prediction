@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC  # Import SVM
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix, accuracy_score
-from imblearn.over_sampling import RandomOverSampler
+from imblearn.over_sampling import SMOTE
 
 class ModelGUI(tk.Tk):
     def __init__(self):
@@ -63,8 +63,12 @@ class ModelGUI(tk.Tk):
         if self.data is not None:
             X = self.data.drop(columns=["Potability"])
             Y = self.data["Potability"]
-            ros = RandomOverSampler(random_state=109)
-            X_resampled, y_resampled = ros.fit_resample(X, Y)
+            # Standardize the features
+            scaler = StandardScaler()
+            X = scaler.fit_transform(X)
+            # SMOTE to deal with class imbalance
+            smote = SMOTE(random_state=42)
+            X_resampled, y_resampled = smote.fit_resample(X, Y)
             self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
                 X_resampled, y_resampled, test_size=0.2, random_state=109
             )
@@ -110,7 +114,7 @@ class ModelGUI(tk.Tk):
 
     def apply_svm(self):
         # Best hyperparameters
-        best_params = {'C': 1, 'gamma': 10}
+        best_params = {'C': 1, 'gamma': 1}
         
         # Create SVC model with the best hyperparameters
         model = SVC(kernel='rbf', C=best_params['C'], gamma=best_params['gamma'])

@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from imblearn.over_sampling import RandomOverSampler
+from imblearn.over_sampling import SMOTE
 
 
 df = pd.read_excel("processed_data.xlsx")
@@ -19,10 +19,11 @@ y=df["Potability"]
 scaler=StandardScaler()
 x=scaler.fit_transform(x)
 
-ros = RandomOverSampler(random_state=42)
-X_resampled, y_resampled = ros.fit_resample(x, y)
+# SMOTE to deal with class imbalance
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(x, y)
 
-x_train, x_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test=train_test_split(X_resampled, y_resampled, test_size=0.2)
 
 
 

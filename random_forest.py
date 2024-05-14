@@ -1,11 +1,9 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix, accuracy_score
-from imblearn.over_sampling import RandomOverSampler
+from imblearn.over_sampling import SMOTE
 
 # Read the dataset
 df = pd.read_excel("processed_data.xlsx")
@@ -18,9 +16,9 @@ y = df["Potability"]
 scaler = StandardScaler()
 x = scaler.fit_transform(x)
 
-# Random oversampling to deal with class imbalance
-ros = RandomOverSampler(random_state=42)
-X_resampled, y_resampled = ros.fit_resample(x, y)
+# SMOTE to deal with class imbalance
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(x, y)
 
 # Split the data into training and test sets
 x_train, x_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
@@ -28,8 +26,9 @@ x_train, x_test, y_train, y_test = train_test_split(X_resampled, y_resampled, te
 # Initialize the Random Forest Classifier
 model = RandomForestClassifier()
 
-# Train the model on the training data
+# Train the initial model on the training data
 model.fit(x_train, y_train)
+
 
 # Make predictions on the test set
 y_pred = model.predict(x_test)
