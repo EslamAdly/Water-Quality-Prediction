@@ -3,14 +3,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix , accuracy_score
+from imblearn.over_sampling import SMOTEN
 
 df =pd.read_excel("processed_data.xlsx")
 
 X = df.drop(columns = 'Potability')
 Y = df['Potability']
-# smote = SMOTE(random_state=42)
-# X_resampled, y_resampled = smote.fit_resample(X, Y)
-X_Train,X_Test,Y_Train,Y_Test = train_test_split(X,Y,test_size=0.3)
+ros = SMOTEN()
+X_resampled, y_resampled = ros.fit_resample(X, Y)
+
+X_Train,X_Test,Y_Train,Y_Test = train_test_split(X_resampled,y_resampled,test_size=0.2,random_state=53)
 
 
 # standardizing data set to improve accuracy
