@@ -28,6 +28,11 @@ class ModelGUI(tk.Tk):
         self.model = None
         self.text_boxes_frame = None
 
+        title_label = tk.Label(
+            self, text="Water Quality Prediction", font=("Helvetica", 24, "bold")
+        )
+        title_label.pack(pady=20)
+
         # Load Data button
         self.load_data_button = tk.Button(
             self, text="Load Data", command=self.load_data
